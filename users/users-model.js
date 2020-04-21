@@ -2,7 +2,7 @@ const db = require("../data/dbConfig");
 
 module.exports = {
 	getUsers,
-	getUser,
+	getUsersWhere,
 	createUser,
 };
 
@@ -10,12 +10,12 @@ function getUsers() {
 	return db("users");
 }
 
-function getUser(filter) {
-	return db("users").where(filter).first();
+function getUsersWhere(filter) {
+	return db("users").where(filter);
 }
 
 function createUser(user) {
 	return db("users")
 		.insert(user)
-		.then(([id]) => getUser({ id }));
+		.then(([id]) => getUsersWhere({ id }));
 }

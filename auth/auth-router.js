@@ -10,7 +10,7 @@ router.use("/register", (req, res) => {
 	user.password = hash;
 
 	Users.createUser(user)
-		.then((user) => res.status(201).json(user))
+		.then(([user]) => res.status(201).json(user))
 		.catch((err) => {
 			console.log(err);
 			res.status(500).json({ error: err.message });
@@ -20,8 +20,8 @@ router.use("/register", (req, res) => {
 router.use("/login", (req, res) => {
 	const { username, password } = req.body;
 
-	Users.getUser({ username })
-		.then((user) => {
+	Users.getUsersWhere({ username })
+		.then(([user]) => {
 			if (user && bcrypt.compareSync(password, user.password)) {
 				const token = generateToken(user);
 
@@ -38,8 +38,7 @@ router.use("/login", (req, res) => {
 
 function generateToken(user) {
 	const payload = {
-		userId: user.id,
-		username: user.username,
+		department: user.department,
 	};
 
 	const options = {

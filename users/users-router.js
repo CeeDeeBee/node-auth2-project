@@ -3,7 +3,9 @@ const router = require("express").Router();
 const Users = require("./users-model");
 
 router.use("/", (req, res) => {
-	Users.getUsers()
+	const department = req.decodedToken.department;
+
+	Users.getUsersWhere({ department })
 		.then((users) => res.status(200).json(users))
 		.catch((err) => {
 			console.log(err);
